@@ -3,6 +3,8 @@ package com.example.logintest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.example.logintest.databinding.ActivityHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -30,5 +32,37 @@ class HomeActivity : AppCompatActivity() {
             //destroy current activity
             finish()
         }
+
+        binding.buttonUpdatePassword.setOnClickListener {
+            val user = auth.currentUser
+            val password = binding.etPassword.text.toString()
+            if (checkPasswordField()) {
+                user?.updatePassword(password)?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(this, it.exception?.message.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                        Log.e("error: ", it.exception.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkPasswordField(): Boolean {
+        if (binding.etPassword.text.toString() == "") {
+            binding.textInputLayoutPassword.error = "This is required field"
+            binding.textInputLayoutPassword.errorIconDrawable = null
+            return false
+        }
+        if (binding.etPassword.length() < 6) {
+            binding.textInputLayoutPassword.error = "Password should be at least 6 characters long"
+            binding.textInputLayoutPassword.errorIconDrawable = null
+            return false
+        }
+
+        return true
     }
 }
