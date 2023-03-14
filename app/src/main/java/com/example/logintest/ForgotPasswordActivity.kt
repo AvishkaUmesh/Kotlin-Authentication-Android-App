@@ -41,6 +41,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.buttonCancel.setOnClickListener {
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+            //destroy current activity
+            finish()
+        }
     }
 
 
