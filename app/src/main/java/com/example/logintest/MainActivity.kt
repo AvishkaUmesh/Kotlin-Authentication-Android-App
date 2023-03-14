@@ -20,20 +20,17 @@ class MainActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        //use to put delay
-        Handler(Looper.getMainLooper()).postDelayed({
-            val user = auth.currentUser
-            if (user != null) {
-                //use to start home activity
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-            } else {
-                //use to start main activity
-                val intent = Intent(this, SignInActivity::class.java)
-                startActivity(intent)
-            }
-            //use to destroy current activity
-            finish()
-        }, 2000)
+        val user = auth.currentUser
+        if (user != null) {
+            //use to start home activity
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        } else {
+            //use to start main activity
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+        }
+        //use to destroy current activity
+        finish()
     }
 }
